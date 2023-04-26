@@ -31,6 +31,29 @@ namespace Rest_API
             this.state = state;
         }
 
+        //Returns number of bathrooms
+        public int GetBathrooms()
+        {
+            int count = 0;
+
+            foreach(Room room in rooms)
+                if (room.Type.ToLower().Equals("bathroom"))
+                    count++;
+
+            return count;
+        }
+
+        public int GetBedrooms()
+        {
+            int count = 0;
+
+            foreach (Room room in rooms)
+                if (room.Type.ToLower().Equals("bedroom"))
+                    count++;
+
+            return count;
+        }
+
         //Calculates Time House has been on the market (Extra Credit)
         public TimeSpan ListingAge(DateTime ListedDate) {
             return DateTime.Now - ListedDate;

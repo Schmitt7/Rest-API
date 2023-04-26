@@ -15,9 +15,6 @@ namespace Rest_API.Controllers
     [Route("api/HomeService")]
     public class HomeController : Controller
     {
-
-
-
         //Gets all homes and adds them to a list of home objects
         [HttpGet]
         [HttpGet("GetHomes")]
@@ -65,7 +62,7 @@ namespace Rest_API.Controllers
         }
 
         //This takes in home objects as well as adds them
-        [HttpPost]
+        [HttpPost()]
         [HttpPost("AddHome")]
         public bool AddHome([FromBody]Home home)
         {
@@ -100,6 +97,45 @@ namespace Rest_API.Controllers
                     return false;
             }else
                 return false;
+        }
+
+        [HttpGet("GetHomeByID/{id}")]
+        public Home GetHomeByName(string id)
+        {
+            DBConnect homeDB = new DBConnect();
+            homeDB.GetDataSet("SELECT * FROM TP_Homes WHERE HomeID = " + id);
+            DBConnect roomDB = new DBConnect();
+            Collection<Room> rooms = new Collection<Room>();
+            DataSet roomDS = roomDB.GetDataSet("SELECT * FROM TP_HomeRooms WHERE HomeID = " + id);
+
+            for (int j = 0; j < roomDS.Tables[0].Rows.Count; j++)
+            {
+                rooms.Add(
+                    new Room(
+                        (int)roomDB.GetField("RoomID", j),
+                        (int)roomDB.GetField("HomeID", j),
+                        (string)roomDB.GetField("RoomType", j),
+                        (decimal)roomDB.GetField("RoomLength", j),
+                        (decimal)roomDB.GetField("RoomWidth", j)
+                    )
+                );
+            }
+
+            return new Home(
+                (int)homeDB.GetField("HomeID", 0),
+                (string)homeDB.GetField("Address", 0),
+                (int)homeDB.GetField("SellerID", 0),
+                (int)homeDB.GetField("RealtorID", 0),
+                (decimal)homeDB.GetField("Price", 0),
+                (string)homeDB.GetField("Images", 0),
+                (string)homeDB.GetField("Description", 0),
+                (DateTime)homeDB.GetField("DateListed", 0),
+                rooms,
+                (string)homeDB.GetField("HomeType", 0),
+                (int)homeDB.GetField("Age", 0),
+                (string)homeDB.GetField("City", 0),
+                (string)homeDB.GetField("State", 0)
+            );
         }
     }
 }

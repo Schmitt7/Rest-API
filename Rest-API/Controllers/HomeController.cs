@@ -87,9 +87,7 @@ namespace Rest_API.Controllers
                 objCommand.Parameters.AddWithValue("@City", home.City);
                 objCommand.Parameters.AddWithValue("@State", home.State);
 
-                int retVal = objDB.DoUpdateUsingCmdObj(objCommand);
-
-                if (retVal > 0)
+                if (objDB.DoUpdateUsingCmdObj(objCommand) > 0)
                     return true;
                 else
                     return false;
@@ -97,6 +95,65 @@ namespace Rest_API.Controllers
                 return false;
         }
 
+        //Deletes Home Records for specified ID
+        [HttpDelete]
+        [HttpDelete("DeleteHomeById/{id}")]
+        public bool DeleteHomeById(int id)
+        {
+            if (id > 0)
+            {
+                DBConnect objDB = new DBConnect();
+                SqlCommand objCommand = new SqlCommand();
+
+                objCommand.CommandType = CommandType.StoredProcedure;
+                objCommand.CommandText = "TP_RemoveHome";
+
+                objCommand.Parameters.AddWithValue("@HomeID", id);
+
+                if (objDB.DoUpdateUsingCmdObj(objCommand) > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+
+
+        [HttpPut()]
+        [HttpPut("UpdateHome")]
+        public bool UpdateHome([FromBody] Home home)
+        {
+            if (home != null)
+            {
+                DBConnect objDB = new DBConnect();
+                SqlCommand objCommand = new SqlCommand();
+
+                objCommand.CommandType = CommandType.StoredProcedure;
+                objCommand.CommandText = "TP_UpdateHome";
+
+                objCommand.Parameters.AddWithValue("@HomeID", home.HomeID);
+                objCommand.Parameters.AddWithValue("@Address", home.Address);
+                objCommand.Parameters.AddWithValue("@RealtorID", home.RealtorID);
+                objCommand.Parameters.AddWithValue("@Price", home.Price);
+                objCommand.Parameters.AddWithValue("@Images", string.Join(",", home.Images));
+                objCommand.Parameters.AddWithValue("@Description", home.Description);
+                objCommand.Parameters.AddWithValue("@DateListed", home.DateListed);
+                objCommand.Parameters.AddWithValue("@HomeType", home.HomeType);
+                objCommand.Parameters.AddWithValue("@Age", home.HomeAge);
+                objCommand.Parameters.AddWithValue("@City", home.City);
+                objCommand.Parameters.AddWithValue("@State", home.State);
+
+                if (objDB.DoUpdateUsingCmdObj(objCommand) > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+                return false;
+        }
+
+        //Gets home by a given ID
         [HttpGet("GetHomeByID/{id}")]
         public Home GetHomeByName(string id)
         {

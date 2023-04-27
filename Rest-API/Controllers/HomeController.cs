@@ -43,10 +43,9 @@ namespace Rest_API.Controllers
                     new Home(
                         (int)homeDB.GetField("HomeID", i),
                         (string)homeDB.GetField("Address", i),
-                        (int)homeDB.GetField("SellerID", i),
                         (int)homeDB.GetField("RealtorID", i),
                         (decimal)homeDB.GetField("Price", i),
-                        (string)homeDB.GetField("Images", i),
+                        ((string)homeDB.GetField("Images", 0)).Split(","),
                         (string)homeDB.GetField("Description", i),
                         (DateTime)homeDB.GetField("DateListed", i),
                         rooms,
@@ -75,10 +74,9 @@ namespace Rest_API.Controllers
                 objCommand.CommandText = "TP_AddHome";
 
                 objCommand.Parameters.AddWithValue("@Address", home.Address);
-                objCommand.Parameters.AddWithValue("@SellerID", home.SellerID);
                 objCommand.Parameters.AddWithValue("@RealtorID", home.RealtorID);
                 objCommand.Parameters.AddWithValue("@Price", home.Price);
-                objCommand.Parameters.AddWithValue("@Images", home.ProfileImg);
+                objCommand.Parameters.AddWithValue("@Images", home.Images);
                 objCommand.Parameters.AddWithValue("@Description", home.Description);
                 objCommand.Parameters.AddWithValue("@DateListed", home.DateListed);
                 objCommand.Parameters.AddWithValue("@Bedrooms", home.GetBedrooms());
@@ -124,10 +122,9 @@ namespace Rest_API.Controllers
             return new Home(
                 (int)homeDB.GetField("HomeID", 0),
                 (string)homeDB.GetField("Address", 0),
-                (int)homeDB.GetField("SellerID", 0),
                 (int)homeDB.GetField("RealtorID", 0),
                 (decimal)homeDB.GetField("Price", 0),
-                (string)homeDB.GetField("Images", 0),
+                ((string)homeDB.GetField("Images", 0)).Split(","),
                 (string)homeDB.GetField("Description", 0),
                 (DateTime)homeDB.GetField("DateListed", 0),
                 rooms,

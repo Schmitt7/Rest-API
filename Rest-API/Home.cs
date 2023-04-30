@@ -9,19 +9,19 @@ namespace Rest_API
 {
     public class Home
     {
-        private int homeId, sellerId, realtorId, homeAge;
-        private string address, profileImg, description, homeType, city, state;
+        private int homeId, realtorId, homeAge;
+        private string address, description, homeType, city, state;
+        private string[] images;
         private DateTime dateListed;
         private Collection<Room> rooms;
         private decimal price;
 
-        public Home(int homeId, string address, int sellerId, int realtorId, decimal price, string profileImg, string description, DateTime dateListed, Collection<Room> rooms, string homeType, int homeAge, string city, string state) {
+        public Home(int homeId, string address, int realtorId, decimal price, string[] images, string description, DateTime dateListed, Collection<Room> rooms, string homeType, int homeAge, string city, string state) {
             this.homeId = homeId;
             this.address = address;
-            this.sellerId = sellerId;
             this.realtorId = realtorId;
             this.price = price;
-            this.profileImg = profileImg;
+            this.images = images;
             this.description = description;
             this.dateListed = dateListed;
             this.rooms = rooms;
@@ -73,10 +73,9 @@ namespace Rest_API
         //Properties
         public int HomeID { get { return homeId; } }
         public string Address { get { return address; } set { address = value; } }
-        public int SellerID { get { return sellerId; } }
         public int RealtorID { get { return realtorId; } }
         public decimal Price { get { return price; } set { price = value; } }
-        public string ProfileImg { get { return profileImg; } set { profileImg = value; } }
+        public string[] Images { get { return images; } set { images = value; } }
         public string Description { get { return description; } set { description = value; } }
         public DateTime DateListed { get { return dateListed; } }
         public Collection<Room> Rooms { get { return rooms; } set { rooms = value; } }

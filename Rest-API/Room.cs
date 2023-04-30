@@ -12,6 +12,7 @@ namespace Rest_API
         private decimal length, width;
 
         public Room(int roomId, int homeId, string type, decimal length, decimal width) {
+            this.homeId = homeId;
             this.roomId = roomId;
             this.type = type;
             this.length = length;

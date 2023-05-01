@@ -11,9 +11,18 @@ namespace Rest_API
         private string type;
         private decimal length, width;
 
-        public Room(int roomId, int homeId, string type, decimal length, decimal width) {
+        public Room(int roomId, int homeId, string type, decimal length, decimal width)
+        {
             this.homeId = homeId;
             this.roomId = roomId;
+            this.type = type;
+            this.length = length;
+            this.width = width;
+        }
+
+        public Room(int homeId, string type, decimal length, decimal width)
+        {
+            this.homeId = homeId;
             this.type = type;
             this.length = length;
             this.width = width;
@@ -22,14 +31,14 @@ namespace Rest_API
         //Function that gets the square footage of the room
         public decimal GetSquareFootage()
         {
-            return length*width;
+            return length * width;
         }
 
         //Properties
         public int RoomId { get { return roomId; } }
         public int HomeId { get { return homeId; } }
         public string Type { get { return type; } }
-        public decimal Length { get { return length; } set { length = value;  } }
+        public decimal Length { get { return length; } set { length = value; } }
         public decimal Width { get { return width; } set { width = value; } }
     }
 }

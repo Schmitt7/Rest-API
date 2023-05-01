@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Rest_API;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Rest_API;
 
 namespace Rest_API
 {
@@ -16,7 +18,8 @@ namespace Rest_API
         private Collection<Room> rooms;
         private decimal price;
 
-        public Home(int homeId, string address, int realtorId, decimal price, string[] images, string description, DateTime dateListed, Collection<Room> rooms, string homeType, int homeAge, string city, string state) {
+        public Home(int homeId, string address, int realtorId, decimal price, string[] images, string description, DateTime dateListed, Collection<Room> rooms, string homeType, int homeAge, string city, string state)
+        {
             this.homeId = homeId;
             this.address = address;
             this.realtorId = realtorId;
@@ -36,7 +39,7 @@ namespace Rest_API
         {
             int count = 0;
 
-            foreach(Room room in rooms)
+            foreach (Room room in rooms)
                 if (room.Type.ToLower().Equals("bathroom"))
                     count++;
 
@@ -55,7 +58,8 @@ namespace Rest_API
         }
 
         //Calculates Time House has been on the market (Extra Credit)
-        public TimeSpan ListingAge(DateTime ListedDate) {
+        public TimeSpan ListingAge(DateTime ListedDate)
+        {
             return DateTime.Now - ListedDate;
         }
 

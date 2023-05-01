@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using Utilities;
 using System.Drawing;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Rest_API.Controllers
 {
@@ -42,17 +43,17 @@ namespace Rest_API.Controllers
                 homes.Add(
                     new Home(
                         (int)homeDB.GetField("HomeID", i),
-                        (string)homeDB.GetField("Address", i),
+                        (string)homeDB.GetField("StreetAddress", i),
                         (int)homeDB.GetField("RealtorID", i),
-                        (decimal)homeDB.GetField("Price", i),
+                        (decimal)homeDB.GetField("HomePrice", i),
                         ((string)homeDB.GetField("Images", i)).Split(","),
                         (string)homeDB.GetField("HomeDescription", i),
                         ((DateTime)homeDB.GetField("DateListed", i)),
                         rooms,
                         (string)homeDB.GetField("HomeType", i),
                         (int)homeDB.GetField("Age", i),
-                        (string)homeDB.GetField("City", i),
-                        (string)homeDB.GetField("State", i)
+                        (string)homeDB.GetField("HomeCity", i),
+                        (string)homeDB.GetField("HomeState", i)
                     )
                 );
             }
@@ -63,8 +64,13 @@ namespace Rest_API.Controllers
         //This takes in home objects as well as adds them
         [HttpPost()]
         [HttpPost("AddHome")]
-        public bool AddHome([FromBody]Home home)
+        public void AddHome([FromBody]Home home)
         {
+            string imgString = String.Empty;
+            foreach (string image in home.Images)
+                imgString += image + ", ";
+
+            Debug.WriteLine("Adding " + home.Address);
             if (home != null)
             {
                 DBConnect objDB = new DBConnect();
@@ -76,7 +82,7 @@ namespace Rest_API.Controllers
                 objCommand.Parameters.AddWithValue("@Address", home.Address);
                 objCommand.Parameters.AddWithValue("@RealtorID", home.RealtorID);
                 objCommand.Parameters.AddWithValue("@Price", home.Price);
-                objCommand.Parameters.AddWithValue("@Images", home.Images);
+                objCommand.Parameters.AddWithValue("@Images", imgString);
                 objCommand.Parameters.AddWithValue("@Description", home.Description);
                 objCommand.Parameters.AddWithValue("@DateListed", home.DateListed);
                 objCommand.Parameters.AddWithValue("@Bedrooms", home.GetBedrooms());
@@ -87,12 +93,8 @@ namespace Rest_API.Controllers
                 objCommand.Parameters.AddWithValue("@City", home.City);
                 objCommand.Parameters.AddWithValue("@State", home.State);
 
-                if (objDB.DoUpdateUsingCmdObj(objCommand) > 0)
-                    return true;
-                else
-                    return false;
-            }else
-                return false;
+                objDB.DoUpdateUsingCmdObj(objCommand);
+            }
         }
 
         //Deletes Home Records for specified ID
@@ -122,7 +124,7 @@ namespace Rest_API.Controllers
 
         [HttpPut()]
         [HttpPut("UpdateHome")]
-        public bool UpdateHome([FromBody] Home home)
+        public int UpdateHome([FromBody] Home home)
         {
             if (home != null)
             {
@@ -145,12 +147,12 @@ namespace Rest_API.Controllers
                 objCommand.Parameters.AddWithValue("@State", home.State);
 
                 if (objDB.DoUpdateUsingCmdObj(objCommand) > 0)
-                    return true;
+                    return home.HomeID;
                 else
-                    return false;
+                    return -1;
             }
             else
-                return false;
+                return -1;
         }
 
         //Gets home by a given ID
@@ -178,17 +180,17 @@ namespace Rest_API.Controllers
 
             return new Home(
                 (int)homeDB.GetField("HomeID", 0),
-                (string)homeDB.GetField("Address", 0),
+                (string)homeDB.GetField("StreetAddress", 0),
                 (int)homeDB.GetField("RealtorID", 0),
-                (decimal)homeDB.GetField("Price", 0),
+                (decimal)homeDB.GetField("HomePrice", 0),
                 ((string)homeDB.GetField("Images", 0)).Split(","),
                 (string)homeDB.GetField("HomeDescription", 0),
                 (DateTime)homeDB.GetField("DateListed", 0),
                 rooms,
                 (string)homeDB.GetField("HomeType", 0),
                 (int)homeDB.GetField("Age", 0),
-                (string)homeDB.GetField("City", 0),
-                (string)homeDB.GetField("State", 0)
+                (string)homeDB.GetField("HomeCity", 0),
+                (string)homeDB.GetField("HomeState", 0)
             );
         }
     }
